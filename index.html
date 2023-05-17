@@ -1,0 +1,818 @@
+<html><head>
+  <title>Interfaz del Juego</title>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+  .card{
+  border-radius: 30px;
+    background: #eeeeee;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+  }
+  .form-control{
+  width:70px;
+  display:inline-block;
+  
+  }
+    .card-container {
+      position: fixed;
+      width: 35%;
+      height: 35%;
+      padding: 20px;
+      
+    }
+
+    .card-container-top-left {
+      top: 0;
+      left: 0;
+    }
+
+    .card-container-top-right {
+      top: 0;
+      right: 0;
+    }
+
+    .card-container-bottom-left {
+      bottom:15%;
+      left: 0;
+    }
+
+    .card-container-bottom-right {
+      bottom:15%;
+      right: 0;
+    }
+
+    .board-container {
+      position: fixed;
+      top: 25%;
+      left: 25%;
+      width: 50%;
+      height: 50%;
+    }
+
+    .board-image {
+      width: 100%;
+      height: 100%;
+    }
+    .container {
+    display: grid;
+    place-items: center;
+    width: 250px;
+    padding: 60px 0 40px;
+    border-radius: 30px;
+    background: #eeeeee;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+}
+.big-number, textarea{
+      font-size: 48px;
+      font-weight: bold;
+      background-color:#eeeeee;
+      border: 0;
+      text-align:center;
+      height:45px;
+      
+      }
+/*
+    Dice Styles
+*/
+.dice {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    transform-style: preserve-3d;
+    transition: 1s ease;
+}
+
+@keyframes rolling {
+    50% {
+        transform: rotateX(455deg) rotateY(455deg);
+    }
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    border: 5px solid #f6f3f0;
+    transform-style: preserve-3d;
+    background: linear-gradient(
+        145deg, #dddbd8, #fff
+    );
+}
+
+.face::before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background: #f6f3f0;
+    transform: translateZ(-1px);
+}
+
+.face::after {
+    position: absolute;
+    content: '';
+    top: 50%;
+    left: 50%;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #131210;
+}
+
+.front {
+    transform: translateZ(50px);
+}
+
+.back {
+    transform: rotateX(180deg) translateZ(50px);
+}
+
+.top {
+    transform: rotateX(90deg) translateZ(50px);
+}
+
+.bottom {
+    transform: rotateX(-90deg) translateZ(50px);
+}
+
+.right {
+    transform: rotateY(90deg) translateZ(50px);
+}
+
+.left {
+    transform: rotateY(-90deg) translateZ(50px);
+}
+
+.front::after {
+    width: 30px;
+    height: 30px;
+    background: #f63330;
+    margin: -15px 0 0 -15px;
+}
+
+.back::after {
+    margin: -35px 0 0 -30px;
+    box-shadow: 40px 0,
+                0 25px,
+                40px 25px,
+                0 50px,
+                40px 50px;
+}
+
+.top::after {
+    margin: -30px 0 0 -30px;
+    box-shadow: 40px 40px;
+}
+
+.bottom::after {
+    margin: -36px 0 0 -36px;
+    box-shadow: 26px 26px,
+                52px 52px,
+                52px 0,
+                0 52px;
+}
+
+.right::after {
+    margin: -30px 0 0 -30px;
+    box-shadow: 40px 0,
+    0 40px,
+    40px 40px;
+}
+
+.left::after {
+    margin: -35px 0 0 -35px;
+    box-shadow: 25px 25px,
+                50px 50px;
+}
+
+/*
+    Roll Button styles
+*/
+.roll:disabled{
+    color: gray;
+    border: 2px solid gray;
+}
+.roll:disabled:hover{
+    color: gray;
+    border: 2px solid gray;
+    background: #eeeeee;
+}
+.btn:disabled{
+    color: gray;
+    border: 2px solid gray;
+}
+.btn:disabled:hover{
+    color: gray;
+    border: 2px solid gray;
+    background: #eeeeee;
+}
+.roll {
+    cursor: pointer;
+    color: #b33951;
+    margin-top: 60px;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font: 700 16px 'Montserrat';
+    border: 2px solid #b33951;
+    transition: .4s;
+}
+
+.roll:hover {
+    color: #fff;
+    background: #b33951;
+}
+.btn{
+    cursor: pointer;
+    color: #b33951;
+    margin-top: 10px;
+    padding: 6px 12px;
+    border-radius: 3px;
+    font: 700 16px 'Montserrat';
+    border: 2px solid #b33951;
+    transition: .4s;
+}
+
+.btn:hover{
+    color: #fff;
+    background: #b33951;
+}
+input[type=number]:enabled::-webkit-inner-spin-button, 
+input[type=number]:enabled::-webkit-outer-spin-button {  
+  opacity: 1;
+}
+#pestaÃ±a {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+  </style>
+<script type="text/javascript" src="https://tiiny.host/ad-script.js"></script><script defer="" data-domain="amethyst-tomasina-39.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script></head>
+<body style="margin-bottom: 55px !important; zoom: 0.7;">
+    <div id="pestaÃ±a">
+        <i id="ampliar" class="material-icons">add</i>
+        <i id="reducir" class="material-icons">remove</i>
+    </div>
+
+    <script>
+        var ampliarBtn = document.getElementById('ampliar');
+        var reducirBtn = document.getElementById('reducir');
+
+        ampliarBtn.addEventListener('click', function() {
+            var currentZoom = parseFloat(document.body.style.zoom) || 1;
+            document.body.style.zoom = currentZoom + 0.1;
+        });
+
+        reducirBtn.addEventListener('click', function() {
+            var currentZoom = parseFloat(document.body.style.zoom) || 1;
+            document.body.style.zoom = currentZoom - 0.1;
+        });
+    </script><div class="card-container card-container-top-left">
+  <div class="card" id="J1" style="background-color: rgb(237, 185, 185);">
+    <div class="card-body">
+      <h5 class="card-title">Jugador 1</h5>
+      <label for="monedas-1">Monedas:</label> 
+      <div class="input-group">
+        <input type="number" class="form-control square-input big-number" id="monedas-1" value="600" style="background-color:#eeeeee; margin-bottom:15px;margin-top:-5px;">
+        <div class="input-group-append">
+          <span class="input-group-text  d-none" id="monedas-display-1"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Patatas-1">Patatas:</label>
+        <input type="number" class="form-control" id="Patatas-1" value="0">
+        <label>Propiedades:</label>
+        <input type="number" class="form-control" id="PatatasPropiedades-1" max="3" value="0">
+      </div>
+      <div class="form-group">
+        <label for="Zanahorias-1">Zanahorias:</label>
+        <input type="number" class="form-control" id="Zanahorias-1" value="0">
+        <label>Propiedades:</label>
+        <input type="number" class="form-control" id="ZanahoriasPropiedades-1" max="3" value="0">
+      </div>
+      <div class="form-group">
+        <label for="Cereales-1">Cereales:</label>
+        <input type="number" class="form-control" id="Cereales-1" value="0">
+        <label>Propiedades:</label>
+        <input type="number" class="form-control" id="CerealesPropiedades-1" max="3" value="0">
+      </div>
+      <div class="form-group">
+        <label for="Lechuga-1">Lechuga:</label>
+        <input type="number" class="form-control" id="Lechuga-1" value="0">
+        <label>Propiedades:</label>
+        <input type="number" class="form-control" id="LechugaPropiedades-1" max="3" value="0">
+      </div>
+      <div class="form-group">
+        <label for="Tomates-1">Tomates:</label>
+        <input type="number" class="form-control" id="Tomates-1" value="0">
+        <label>Propiedades:</label>
+        <input type="number" class="form-control" id="TomatesPropiedades-1" max="4" value="0">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-container card-container-top-right">
+  <div class="card" id="J2" style="background-color: rgb(238, 238, 238);">
+    <div class="card-body">
+      <h5 class="card-title">Jugador 2</h5>
+      <label for="monedas-2">Monedas:</label> 
+      <div class="input-group">
+        <input type="number" class="form-control square-input big-number" id="monedas-2" value="600" style="background-color:#eeeeee; margin-bottom:15px;margin-top:-5px;" disabled="">
+        <div class="input-group-append">
+          <span class="input-group-text  d-none" id="monedas-display-2"></span>
+          </div>
+          </div>
+          <div class="form-group">
+          <label for="Patatas-2">Patatas:</label>
+          <input type="number" class="form-control" id="Patatas-2" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="PatatasPropiedades-2" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Zanahorias-2">Zanahorias:</label>
+          <input type="number" class="form-control" id="Zanahorias-2" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="ZanahoriasPropiedades-2" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Cereales-2">Cereales:</label>
+          <input type="number" class="form-control" id="Cereales-2" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="CerealesPropiedades-2" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Lechuga-2">Lechuga:</label>
+          <input type="number" class="form-control" id="Lechuga-2" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="LechugaPropiedades-2" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Tomates-2">Tomates:</label>
+          <input type="number" class="form-control" id="Tomates-2" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="TomatesPropiedades-2" max="4" value="0" disabled="">
+          </div>
+          </div>
+          
+            </div>
+          </div>
+          <div class="card-container card-container-bottom-left">
+            <div class="card" id="J3" style="background-color: rgb(238, 238, 238);">
+              <div class="card-body">
+                <h5 class="card-title">Jugador 3</h5>
+                <label for="monedas-3">Monedas:</label> 
+                <div class="input-group">
+                  <input type="number" class="form-control square-input big-number" id="monedas-3" value="600" style="background-color:#eeeeee; margin-bottom:15px;margin-top:-5px;" disabled="">
+                  <div class="input-group-append">
+                    <span class="input-group-text  d-none" id="monedas-display-3"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Patatas-3">Patatas:</label>
+                  <input type="number" class="form-control" id="Patatas-3" value="0" disabled="">
+                  <label>Propiedades:</label>
+                  <input type="number" class="form-control" id="PatatasPropiedades-3" max="3" value="0" disabled="">
+                </div>
+                <div class="form-group">
+                  <label for="Zanah
+          orias-3">Zanahorias:</label>
+          <input type="number" class="form-control" id="Zanahorias-3" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="ZanahoriasPropiedades-3" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Cereales-3">Cereales:</label>
+          <input type="number" class="form-control" id="Cereales-3" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="CerealesPropiedades-3" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Lechuga-3">Lechuga:</label>
+          <input type="number" class="form-control" id="Lechuga-3" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="LechugaPropiedades-3" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Tomates-3">Tomates:</label>
+          <input type="number" class="form-control" id="Tomates-3" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="TomatesPropiedades-3" max="4" value="0" disabled="">
+          </div>
+          </div>
+          
+            </div>
+          </div>
+          <div class="card-container card-container-bottom-right">
+            <div class="card" id="J4" style="background-color: rgb(238, 238, 238);">
+              <div class="card-body">
+                <h5 class="card-title">Jugador 4</h5>
+                <label for="monedas-4">Monedas:</label> 
+                <div class="input-group">
+                  <input type="number" class="form-control square-input big-number" id="monedas-4" value="600" style="background-color:#eeeeee; margin-bottom:15px;margin-top:-5px;" disabled="">
+                  <div class="input-group-append">
+                    <span class="input-group-text  d-none" id="monedas-display-4"></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="Patatas-4">Patatas:</label>
+                  <input type="number" class="form-control" id="Patatas-4" value="0" disabled="">
+                  <label>Propiedades:</label>
+                  <input type="number" class="form-control" id="PatatasPropiedades-4" max="3" value="0" disabled="">
+                </div>
+                <div class="form-group">
+                  <label for="Zanahorias-4">Zanahorias:</label>
+                  <input type="number" class="form-control" id="Zanahorias-4" value="0" disabled="">
+                  <label>Propiedades:</label>
+                  <input type="number" class="form-control" id="ZanahoriasPropiedades-4" max="3" value="0" disabled="">
+                </div>
+                <div class="form-group">
+                  <label for="Cereales-4">Cereales:</label>
+                  <input type="number" class="form-control" id="Cereales-4" value="0" disabled="">
+                  <label>Propiedades:</label>
+                  <input type="number" class="form-control" id="CerealesPropiedades-4" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Lechuga-4">Lechuga:</label>
+          <input type="number" class="form-control" id="Lechuga-4" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="LechugaPropiedades-4" max="3" value="0" disabled="">
+          </div>
+          <div class="form-group">
+          <label for="Tomates-4">Tomates:</label>
+          <input type="number" class="form-control" id="Tomates-4" value="0" disabled="">
+          <label>Propiedades:</label>
+          <input type="number" class="form-control" id="TomatesPropiedades-4" max="4" value="0" disabled="">
+          </div>
+          </div>
+          
+            </div>
+          </div>
+
+  <div class="board-container">
+<div class="container">
+    <h2>
+    FEUDOPOLY
+    </h2>
+
+    <div class="dice" style="animation: 0s ease 0s 1 normal none running none; transform: rotateX(180deg) rotateY(0deg);">
+        <div class="face front"></div>
+        <div class="face back"></div>
+        <div class="face top"></div>
+        <div class="face bottom"></div>
+        <div class="face right"></div>
+        <div class="face left"></div>
+    </div>
+
+    <button class="roll">
+        Tirar dado
+    </button>
+    <button class="btn" onclick="next()">
+        Siguiente turno
+    </button>
+    <button class="btn" onclick="calcularMonedasJugador()">
+      Mercado
+  </button>
+  <button class="btn" onclick="sumarBienes()" id="recolecta">
+    Recolecta
+</button>
+
+</div>
+</div>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+  deshabilitarCasillasJugador(1);
+  deshabilitarCasillasJugador(2);
+  deshabilitarCasillasJugador(3);
+  deshabilitarCasillasJugador(4);
+var numeroActual = Math.floor(Math.random() * 4) + 1; // Seleccionar un nÃºmero aleatorio del 1 al 4 al iniciar
+habilitarCasillasJugador(numeroActual);
+establecerFondoRojo(numeroActual);
+window.current = numeroActual
+function next() {
+  deshabilitarCasillasJugador(numeroActual);
+  establecerFondoNormal(numeroActual);// Mostrar el nÃºmero actual en la consola
+  
+  numeroActual++; // Incrementar el nÃºmero actual
+  
+  if (numeroActual > 4) {
+    numeroActual = 1; // Volver al 1 si el nÃºmero actual es mayor que 4
+    document.getElementById("recolecta").disabled = false
+  }
+  habilitarCasillasJugador(numeroActual);
+establecerFondoRojo(numeroActual);
+window.current = numeroActual
+}
+
+  const dice = document.querySelector('.dice');
+const rollBtn = document.querySelector('.roll');
+
+const randomDice = () => {
+rollBtn.disabled = true;
+
+    const random = Math.floor(Math.random() * 10);
+
+    if (random >= 1 && random <= 6) {
+        rollDice(random);
+    }
+    else {
+        randomDice();
+    }
+}
+
+const rollDice = random => {
+
+    dice.style.animation = 'rolling 4s';
+
+    setTimeout(() => {
+
+        switch (random) {
+            case 1:
+                dice.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                break;
+
+            case 6:
+                dice.style.transform = 'rotateX(180deg) rotateY(0deg)';
+                break;
+
+            case 2:
+                dice.style.transform = 'rotateX(-90deg) rotateY(0deg)';
+                break;
+
+            case 5:
+                dice.style.transform = 'rotateX(90deg) rotateY(0deg)';
+                break;
+
+            case 3:
+                dice.style.transform = 'rotateX(0deg) rotateY(90deg)';
+                break;
+
+            case 4:
+                dice.style.transform = 'rotateX(0deg) rotateY(-90deg)';
+                break;
+
+            default:
+                break;
+        }
+        
+
+        dice.style.animation = 'none';
+        rollBtn.disabled = false;
+
+    }, 4050);
+
+}
+
+rollBtn.addEventListener('click', randomDice);
+
+function deshabilitarCasillasJugador(numeroJugador) {
+  // Obtener el contenedor de la tarjeta del jugador
+  var cardContainer = document.querySelector('body'); // Actualiza el selector segÃºn corresponda
+
+  // Obtener todas las casillas de la tarjeta del jugador
+  var casillasJugador = cardContainer.querySelectorAll('input[type="number"], input[type="text"], textarea');
+
+  // Deshabilitar las casillas del jugador especÃ&shy;fico
+  casillasJugador.forEach(function(casilla) {
+      if(casilla.id.includes(numeroJugador)){
+      casilla.disabled = true
+      }
+  });
+}
+function habilitarCasillasJugador(numeroJugador) {
+  // Obtener el contenedor de la tarjeta del jugador
+  var cardContainer = document.querySelector('body'); // Actualiza el selector segÃºn corresponda
+
+  // Obtener todas las casillas de la tarjeta del jugador
+  var casillasJugador = cardContainer.querySelectorAll('input[type="number"], input[type="text"], textarea');
+
+  // Deshabilitar las casillas del jugador especÃ&shy;fico
+  casillasJugador.forEach(function(casilla) {
+      if(casilla.id.includes(numeroJugador)){
+      casilla.disabled = false
+      }
+  });
+}
+function establecerFondoRojo(numero) {
+  var elemento = document.getElementById("J" + numero);
+  if (elemento) {
+    elemento.style.backgroundColor = "#edb9b9";
+  }
+}
+function establecerFondoNormal(numero) {
+  var elemento = document.getElementById("J" + numero);
+  if (elemento) {
+    elemento.style.backgroundColor = "#eeeeee";
+  }
+}
+function check(){
+var element = document.querySelector('div[style="position: fixed !important; bottom: 0% !important; width: 100% !important; height: 55px !important; z-index: 9999 !important;"]');
+if (element) {
+  element.remove();
+}
+       
+}
+
+setTimeout(() => {
+
+       var element = document.querySelector('div[style="position: fixed !important; bottom: 0% !important; width: 100% !important; height: 55px !important; z-index: 9999 !important;"]');
+
+if (element) {
+  element.remove();
+}
+        
+
+        dice.style.animation = 'none';
+        rollBtn.disabled = false;
+
+    }, 150);
+
+    function sumarBienes() {
+      document.getElementById("recolecta").disabled = true
+// Jugador 1
+let patatasPropiedades1 = parseInt(document.getElementById("PatatasPropiedades-1").value);
+let tomatesPropiedades1 = parseInt(document.getElementById("TomatesPropiedades-1").value);
+let lechugaPropiedades1 = parseInt(document.getElementById("LechugaPropiedades-1").value);
+let cerealesPropiedades1 = parseInt(document.getElementById("CerealesPropiedades-1").value);
+let zanahoriasPropiedades1 = parseInt(document.getElementById("ZanahoriasPropiedades-1").value);
+
+let patatasBienes1 = patatasPropiedades1 * 2;
+let tomatesBienes1 = tomatesPropiedades1 * 2;
+let lechugaBienes1 = lechugaPropiedades1 * 3;
+let cerealesBienes1 = cerealesPropiedades1 * 3;
+let zanahoriasBienes1 = zanahoriasPropiedades1 * 4;
+
+// Obtener los valores actuales de las casillas
+let patatasActuales1 = parseInt(document.getElementById("Patatas-1").value);
+let tomatesActuales1 = parseInt(document.getElementById("Tomates-1").value);
+let lechugaActuales1 = parseInt(document.getElementById("Lechuga-1").value);
+let cerealesActuales1 = parseInt(document.getElementById("Cereales-1").value);
+let zanahoriasActuales1 = parseInt(document.getElementById("Zanahorias-1").value);
+
+// Sumar los nuevos bienes a los valores actuales
+let patatasTotal1 = patatasActuales1 + patatasBienes1;
+let tomatesTotal1 = tomatesActuales1 + tomatesBienes1;
+let lechugaTotal1 = lechugaActuales1 + lechugaBienes1;
+let cerealesTotal1 = cerealesActuales1 + cerealesBienes1;
+let zanahoriasTotal1 = zanahoriasActuales1 + zanahoriasBienes1;
+
+// Actualizar las casillas correspondientes
+document.getElementById("Patatas-1").value = patatasTotal1;
+document.getElementById("Tomates-1").value = tomatesTotal1;
+document.getElementById("Lechuga-1").value = lechugaTotal1;
+document.getElementById("Cereales-1").value = cerealesTotal1;
+document.getElementById("Zanahorias-1").value = zanahoriasTotal1;
+
+
+// Jugador 2
+let patatasPropiedades2 = parseInt(document.getElementById("PatatasPropiedades-2").value);
+let tomatesPropiedades2 = parseInt(document.getElementById("TomatesPropiedades-2").value);
+let lechugaPropiedades2 = parseInt(document.getElementById("LechugaPropiedades-2").value);
+let cerealesPropiedades2 = parseInt(document.getElementById("CerealesPropiedades-2").value);
+let zanahoriasPropiedades2 = parseInt(document.getElementById("ZanahoriasPropiedades-2").value);
+
+let patatasBienes2 = patatasPropiedades2 * 2;
+let tomatesBienes2 = tomatesPropiedades2 * 2;
+let lechugaBienes2 = lechugaPropiedades2 * 3;
+let cerealesBienes2 = cerealesPropiedades2 * 3;
+let zanahoriasBienes2 = zanahoriasPropiedades2 * 4;
+
+// Obtener los valores actuales de las casillas
+let patatasActuales2 = parseInt(document.getElementById("Patatas-2").value);
+let tomatesActuales2 = parseInt(document.getElementById("Tomates-2").value);
+let lechugaActuales2 = parseInt(document.getElementById("Lechuga-2").value);
+let cerealesActuales2 = parseInt(document.getElementById("Cereales-2").value);
+let zanahoriasActuales2 = parseInt(document.getElementById("Zanahorias-2").value);
+
+// Sumar los nuevos bienes a los valores actuales
+let patatasTotal2 = patatasActuales2 + patatasBienes2;
+let tomatesTotal2 = tomatesActuales2 + tomatesBienes2;
+let lechugaTotal2 = lechugaActuales2 + lechugaBienes2;
+let cerealesTotal2 = cerealesActuales2 + cerealesBienes2;
+let zanahoriasTotal2 = zanahoriasActuales2 + zanahoriasBienes2;
+
+// Actualizar las casillas correspondientes
+document.getElementById("Patatas-2").value = patatasTotal2;
+document.getElementById("Tomates-2").value = tomatesTotal2;
+document.getElementById("Lechuga-2").value = lechugaTotal2;
+document.getElementById("Cereales-2").value = cerealesTotal2;
+document.getElementById("Zanahorias-2").value = zanahoriasTotal2;
+
+
+// Jugador 3
+let patatasPropiedades3 = parseInt(document.getElementById("PatatasPropiedades-3").value);
+let tomatesPropiedades3 = parseInt(document.getElementById("TomatesPropiedades-3").value);
+let lechugaPropiedades3 = parseInt(document.getElementById("LechugaPropiedades-3").value);
+let cerealesPropiedades3 = parseInt(document.getElementById("CerealesPropiedades-3").value);
+let zanahoriasPropiedades3 = parseInt(document.getElementById("ZanahoriasPropiedades-3").value);
+
+let patatasBienes3 = patatasPropiedades3 * 2;
+let tomatesBienes3 = tomatesPropiedades3 * 2;
+let lechugaBienes3 = lechugaPropiedades3 * 3;
+let cerealesBienes3 = cerealesPropiedades3 * 3;
+let zanahoriasBienes3 = zanahoriasPropiedades3 * 4;
+
+// Obtener los valores actuales de las casillas
+let patatasActuales3 = parseInt(document.getElementById("Patatas-3").value);
+let tomatesActuales3 = parseInt(document.getElementById("Tomates-3").value);
+let lechugaActuales3 = parseInt(document.getElementById("Lechuga-3").value);
+let cerealesActuales3 = parseInt(document.getElementById("Cereales-3").value);
+let zanahoriasActuales3 = parseInt(document.getElementById("Zanahorias-3").value);
+
+// Sumar los nuevos bienes a los valores actuales
+let patatasTotal3 = patatasActuales3 + patatasBienes3;
+let tomatesTotal3 = tomatesActuales3 + tomatesBienes3;
+let lechugaTotal3 = lechugaActuales3 + lechugaBienes3;
+let cerealesTotal3 = cerealesActuales3 + cerealesBienes3;
+let zanahoriasTotal3 = zanahoriasActuales3 + zanahoriasBienes3;
+
+// Actualizar las casillas correspondientes
+document.getElementById("Patatas-3").value = patatasTotal3;
+document.getElementById("Tomates-3").value = tomatesTotal3;
+document.getElementById("Lechuga-3").value = lechugaTotal3;
+document.getElementById("Cereales-3").value = cerealesTotal3;
+document.getElementById("Zanahorias-3").value = zanahoriasTotal3;
+
+
+// Jugador 4
+let patatasPropiedades4 = parseInt(document.getElementById("PatatasPropiedades-4").value);
+let tomatesPropiedades4 = parseInt(document.getElementById("TomatesPropiedades-4").value);
+let lechugaPropiedades4 = parseInt(document.getElementById("LechugaPropiedades-4").value);
+let cerealesPropiedades4 = parseInt(document.getElementById("CerealesPropiedades-4").value);
+let zanahoriasPropiedades4 = parseInt(document.getElementById("ZanahoriasPropiedades-4").value);
+
+let patatasBienes4 = patatasPropiedades4 * 2;
+let tomatesBienes4 = tomatesPropiedades4 * 2;
+let lechugaBienes4 = lechugaPropiedades4 * 3;
+let cerealesBienes4 = cerealesPropiedades4 * 3;
+let zanahoriasBienes4 = zanahoriasPropiedades4 * 4;
+
+// Obtener los valores actuales de las casillas
+let patatasActuales4 = parseInt(document.getElementById("Patatas-4").value);
+let tomatesActuales4 = parseInt(document.getElementById("Tomates-4").value);
+let lechugaActuales4 = parseInt(document.getElementById("Lechuga-4").value);
+let cerealesActuales4 = parseInt(document.getElementById("Cereales-4").value);
+let zanahoriasActuales4 = parseInt(document.getElementById("Zanahorias-4").value);
+
+// Sumar los nuevos bienes a los valores actuales
+let patatasTotal4 = patatasActuales4 + patatasBienes4;
+let tomatesTotal4 = tomatesActuales4 + tomatesBienes4;
+let lechugaTotal4 = lechugaActuales4 + lechugaBienes4;
+let cerealesTotal4 = cerealesActuales4 + cerealesBienes4;
+let zanahoriasTotal4 = zanahoriasActuales4 + zanahoriasBienes4;
+
+// Actualizar las casillas correspondientes
+document.getElementById("Patatas-4").value = patatasTotal4;
+document.getElementById("Tomates-4").value = tomatesTotal4;
+document.getElementById("Lechuga-4").value = lechugaTotal4;
+document.getElementById("Cereales-4").value = cerealesTotal4;
+document.getElementById("Zanahorias-4").value = zanahoriasTotal4;
+
+
+}
+
+
+function calcularMonedasJugador() {
+  var n = current
+  // Obtener los valores actuales de los bienes
+  let patatasActuales = parseInt(document.getElementById("Patatas-" + n).value);
+  let tomatesActuales = parseInt(document.getElementById("Tomates-" + n).value);
+  let lechugaActuales = parseInt(document.getElementById("Lechuga-" + n).value);
+  let cerealesActuales = parseInt(document.getElementById("Cereales-" + n).value);
+  let zanahoriasActuales = parseInt(document.getElementById("Zanahorias-" + n).value);
+
+  // Calcular las monedas correspondientes
+  let monedasPatatas = patatasActuales * 5;
+  let monedasTomates = tomatesActuales * 8;
+  let monedasLechuga = lechugaActuales * 10;
+  let monedasCereales = cerealesActuales * 12;
+  let monedasZanahorias = zanahoriasActuales * 15;
+
+  // Sumar las monedas al total actual
+  let monedasTotales = parseInt(document.getElementById("monedas-" + n).value) + monedasPatatas + monedasTomates + monedasLechuga + monedasCereales + monedasZanahorias;
+
+  // Actualizar el valor del input de monedas del jugador
+  document.getElementById("monedas-" + n).value = monedasTotales;
+
+  // Poner a 0 los inputs de bienes del jugador
+  document.getElementById("Patatas-" + n).value = 0;
+  document.getElementById("Tomates-" + n).value = 0;
+  document.getElementById("Lechuga-" + n).value = 0;
+  document.getElementById("Cereales-" + n).value = 0;
+  document.getElementById("Zanahorias-" + n).value = 0;
+}
+
+
+  </script>
+
+<div id="new-tab-sidebar" class="hidden"><div class="wrap">
+        <img class="new-tab-logo" src="chrome-extension://meffljleomgifbbcffejnmhjagncfpbd/img/128x128.png">
+        
+    <ul></ul></div></div></body></html>
